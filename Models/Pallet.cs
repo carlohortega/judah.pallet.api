@@ -9,9 +9,8 @@ namespace Eis.Pallet.Api.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
-        public decimal Size { get; set; }
-        [Required]
+
+        // Navigation properties
         public int AppUserId { get; set; }
         public AppUser AppUser { get; set; }
     }

@@ -14,6 +14,8 @@ namespace Eis.Pallet.Api.Models
         public string Name { get; set; }
         [Required]
         public string ObjectId { get; set; }
+
+        // Navigation properties
         public ICollection<Pallet> Pallets { get; set; } = new List<Pallet>();
     }
 }
