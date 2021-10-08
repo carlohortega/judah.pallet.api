@@ -62,6 +62,11 @@ namespace Eis.Pallet.Api.Data
             return _context.AppUsers.Any(p => p.Id == appUserId);
         }
 
+        public bool ExtAppUserExists(int extAppUserId)
+        {
+            return _context.AppUsers.Any(p => p.ExtId == extAppUserId);
+        }
+
         public bool SaveChanges()
         {
             return (_context.SaveChanges() >= 0);

@@ -6,7 +6,6 @@ namespace Eis.Pallet.Api.Models
     public class AppUser
     {
         [Key]
-        [Required]
         public int Id { get; set; }
         [Required]
         public int ExtId { get; set; }

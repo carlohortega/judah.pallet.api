@@ -11,6 +11,7 @@ namespace Eis.Pallet.Api.Data
         IEnumerable<AppUser> GetAllAppUsers();
         void CreateAppUser(AppUser appUser);
         bool AppUserExists(int appUserId);
+        bool ExtAppUserExists(int extAppUserId);
 
         // Pallets
         IEnumerable<Models.Pallet> GetPalletsForAppUserId(int appUserId);

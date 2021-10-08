@@ -12,6 +12,8 @@ namespace Eis.Pallet.Api.Profiles
             CreateMap<AppUser, AppUserReadDto>();
             CreateMap<PalletCreateDto, Models.Pallet>();
             CreateMap<Models.Pallet, PalletReadDto>();
+            CreateMap<AppUserPublishedDto, AppUser>()
+                .ForMember(dest => dest.ExtId, opt => opt.MapFrom(src => src.Id));
         }
     }
 }

@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Eis.Pallet.Api.AsyncDataServices;
 using Eis.Pallet.Api.Data;
+using Eis.Pallet.Api.EventProcessing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +34,8 @@ namespace PalletService
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConn")));
             services.AddScoped<IPalletRepo, PalletRepo>();
             services.AddControllers();
+            services.AddHostedService<MessageBusSubscriber>();
+            services.AddSingleton<IEventProcessor, EventProcessor>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddSwaggerGen(c =>
