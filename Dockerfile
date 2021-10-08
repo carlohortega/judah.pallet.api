@@ -12,16 +12,16 @@ USER appuser
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
 WORKDIR /src
-COPY ["Eis.Pallet.Api.csproj", "./"]
-RUN dotnet restore "Eis.Pallet.Api.csproj"
+COPY ["Judah.Pallet.Api.csproj", "./"]
+RUN dotnet restore "Judah.Pallet.Api.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "Eis.Pallet.Api.csproj" -c Release -o /app/build
+RUN dotnet build "Judah.Pallet.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Eis.Pallet.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "Judah.Pallet.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Eis.Pallet.Api.dll"]
+ENTRYPOINT ["dotnet", "Judah.Pallet.Api.dll"]
