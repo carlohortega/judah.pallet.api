@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Eis.Pallet.Api.AsyncDataServices;
 using Eis.Pallet.Api.Data;
 using Eis.Pallet.Api.EventProcessing;
+using Eis.Pallet.Api.SyncDataServices.Grpc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +34,7 @@ namespace PalletService
             services.AddDbContext<AppDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConn")));
             services.AddScoped<IPalletRepo, PalletRepo>();
+            services.AddScoped<IIdentityDataClient, IdentityDataClient>();
             services.AddControllers();
             services.AddHostedService<MessageBusSubscriber>();
             services.AddSingleton<IEventProcessor, EventProcessor>();

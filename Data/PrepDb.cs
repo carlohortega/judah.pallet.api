@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Eis.Pallet.Api.Models;
+using Eis.Pallet.Api.SyncDataServices.Grpc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -14,38 +16,22 @@ namespace Eis.Pallet.Api.Data
         {
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-                SeedData(serviceScope.ServiceProvider.GetService<AppDbContext>());
+                var grcpClient = serviceScope.ServiceProvider.GetService<IIdentityDataClient>();
+                var appUsers = grcpClient.ReturnAllAppUsers();
+
+                SeedData(serviceScope.ServiceProvider.GetService<IPalletRepo>(), appUsers);
             }
         }
 
-        private static void SeedData(AppDbContext context)
+        private static void SeedData(IPalletRepo repo, IEnumerable<AppUser> appUsers)
         {
-            Console.WriteLine("--> Attempting apply migrations.");
+            Console.WriteLine("--> Seeding app users from GRPC.");
 
-            try
-            {
-                context.Database.Migrate();
-            }
-            catch
-            {
-                Console.WriteLine("--> Did not run migrations.");
-            }
-
-            if (!context.AppUsers.Any())
-            {
-                Console.WriteLine("--> Seeding data...");
-
-                // context.Users.AddRange(
-                //     new AppUser() { Name = "Joe", ObjectId = "1001" },
-                //     new AppUser() { Name = "Jane", ObjectId = "1002" },
-                //     new AppUser() { Name = "Bob", ObjectId = "1004" }
-                // );
-
-                // context.SaveChanges();
-            }
-            else
-            {
-                Console.WriteLine("--> We already have data.");
+            foreach(var item in appUsers) {
+                if(!repo.ExtAppUserExists(item.ExtId)) {
+                    repo.CreateAppUser(item);
+                }
+                repo.SaveChanges();
             }
         }
     }
